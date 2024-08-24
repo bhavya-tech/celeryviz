@@ -1,11 +1,15 @@
 FROM instrumentisto/flutter AS build
 
 WORKDIR /app
-ARG GITHUB_PAT
-RUN git config --global url."https://${GITHUB_PAT}@github.com/".insteadOf "https://github.com/"
+ARG GITHUB_PAT=""
+ARG SOURCE="main"
+ARG GIT_REPO="https://github.com/bhavya-tech/celeryviz_with_lib.git"
 
-RUN git clone https://github.com/bhavya-tech/celeryviz_with_lib.git
+RUN if [ $GITHUB_PAT != "" ]; then git config --global url."https://${GITHUB_PAT}@github.com/".insteadOf "https://github.com/"; fi
+
+RUN git clone $GIT_REPO
 WORKDIR /app/celeryviz_with_lib
+RUN git checkout $SOURCE
 
 # Ensure Flutter is up to date and enable web support
 RUN flutter config --enable-web
