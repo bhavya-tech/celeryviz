@@ -23,7 +23,7 @@ classifiers = [s.strip() for s in classes.split('\n') if s]
 
 setup(
     name='celeryviz',
-    description= "A gui based celery flower",
+    description= "A gui based celery monitoring",
     version='0.0.0',
     classifiers=classifiers,
     author = "Bhavya",

@@ -1,5 +1,5 @@
 .env
 .pytest_cache/
 .vscode/
-
+celeryviz.egg-info/
 celeryviz/static/
