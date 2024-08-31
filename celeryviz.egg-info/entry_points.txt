@@ -1,2 +1,0 @@
-[celery.commands]
-celeryviz = celeryviz.command:celeryviz
