@@ -23,7 +23,9 @@ classifiers = [s.strip() for s in classes.split('\n') if s]
 
 setup(
     name='celeryviz',
-    description= "A gui based celery monitoring",
+    description= "A gui based celery flower",
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     version='0.0.0',
     classifiers=classifiers,
     author = "Bhavya",
