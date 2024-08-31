@@ -23,7 +23,19 @@ permissions:
   contents: read
 
 jobs:
+
+  build_ui:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build UI
+        run: docker build --output=./celeryviz/static/ --build-arg="GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}" ./build_ui 
+
   deploy:
+
+    needs: build_ui
 
     runs-on: ubuntu-latest
 
