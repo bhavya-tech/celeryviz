@@ -3,6 +3,8 @@ CeleryViz
 
 A tool for visualising execution of Celery tasks.
 
+![](./docs/media/demo.webm)
+
 # Getting started
 
 ## Installation
@@ -13,33 +15,34 @@ pip install celeryviz
 
 ## Usage
 
-  - First start the celery worker:
+#### 1. Create a celery project.
+  - Use [this gist](https://gist.github.com/bhavya-tech/d937ef45905720014ee12fe332352966) for minimal example.
+
+#### 2. Start the celery worker:
 
 ```bash
-celery -A proj worker
+celery -A example_app worker
 ```
-(`proj` is the name of your Celery project)
 
-  - Then start the CeleryViz server:
-
+#### 3. Start the CeleryViz server:
 
 ```bash
-celery -A proj celeryviz
+celery -A example_app celeryviz
 ```
 
-  - Open your browser and go to [http://localhost:3000/]()
+  -  Open your browser and go to [http://localhost:5000/]()
 
-## Preview
-
+  - The `attach_log_sender` in the example gist sends logs to CeleryViz.
+    - If a custom logger does not support handlers, then monkeypatch the logger to mimic the `attach_log_sender` function.
 
 # Contributing
 
 ## Getting started
-1. Clone this repository.
+#### 1. Clone this repository.
 
-2. Build the webapp.
+#### 2. Build the webapp
 
-The UI webapp is maintained separately in Flutter. 
+The UI webapp is maintained separately in [celeryviz_with_lib](https://github.com/bhavya-tech/celeryviz_with_lib).
 
 Run the following command to build the latest version of standard webapp locally (ensure that docker is installed):
 
@@ -63,7 +66,7 @@ Args for docker build:
 docker build --output ./celeryviz/static --build-arg="GITHUB_PAT=<your github personal access token>" ./build_ui
 ```
 
-3. Install the package in editable mode:
+#### 3. Install the package in editable mode:
 
 ```bash
 pip install -e .

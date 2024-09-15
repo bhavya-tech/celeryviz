@@ -4,10 +4,9 @@ def get_requirements():
     return open('./requirements.txt').read().splitlines()
 
 classes = """
-    Development Status :: 4 - Beta
+    Development Status :: 1 - Planning
     Intended Audience :: Developers
-    License :: OSI Approved :: BSD License
-    Topic :: System :: Distributed Computing
+    Topic :: System :: Monitoring
     Programming Language :: Python
     Programming Language :: Python :: 3
     Programming Language :: Python :: 3 :: Only
@@ -28,7 +27,7 @@ setup(
     long_description_content_type='text/markdown',
     version='0.0.0',
     classifiers=classifiers,
-    author = "Bhavya",
+    author = "Bhavya Peshavaria",
     packages=find_packages(),
     package_dir={'celeryviz': 'celeryviz'},
     package_data={'celeryviz': ['static/*']},
