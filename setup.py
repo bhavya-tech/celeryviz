@@ -31,6 +31,7 @@ setup(
     author = "Bhavya",
     packages=find_packages(),
     package_dir={'celeryviz': 'celeryviz'},
+    package_data={'celeryviz': ['static/*']},
     install_requires=get_requirements(),
     entry_points={
         'celery.commands': [

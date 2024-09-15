@@ -1,7 +1,7 @@
 CeleryViz
 =========
 
-A tool for visualising executio of Celery tasks.
+A tool for visualising execution of Celery tasks.
 
 # Getting started
 
