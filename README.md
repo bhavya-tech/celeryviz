@@ -3,9 +3,8 @@ CeleryViz
 
 A tool for visualising execution of Celery tasks.
 
-![](./docs/media/demo.webm)
+<video src="https://github.com/user-attachments/assets/ec6b0f0e-2ad6-4a2c-8928-a7765fd96023"></video>
 
-# Getting started
 
 ## Installation
 
@@ -16,7 +15,7 @@ pip install celeryviz
 ## Usage
 
 #### 1. Create a celery project.
-  - Use [this gist](https://gist.github.com/bhavya-tech/d937ef45905720014ee12fe332352966) for minimal example.
+  - Use [this gist](https://gist.github.com/bhavya-tech/d937ef45905720014ee12fe332352966) for a minimal example.
 
 #### 2. Start the celery worker:
 
@@ -37,22 +36,23 @@ celery -A example_app celeryviz
 
 # Contributing
 
-## Getting started
+## Setting up the development environment
 #### 1. Clone this repository.
+```bash
+git clone https://github.com/bhavya-tech/celeryviz.git
+```
 
 #### 2. Build the webapp
 
-The UI webapp is maintained separately in [celeryviz_with_lib](https://github.com/bhavya-tech/celeryviz_with_lib).
+  - The UI webapp is maintained separately in [celeryviz_with_lib](https://github.com/bhavya-tech/celeryviz_with_lib).
 
-Run the following command to build the latest version of standard webapp locally (ensure that docker is installed):
+  - Run the following command to build the latest version of standard webapp locally (ensure that [docker](https://www.docker.com/) is installed):
 
 ```bash
 docker build --output ./celeryviz/static ./build_ui
 ```
 
-For customised builds, the following build args can be used:
-
-Args for docker build:
+For customised builds, the following optional build args can be used:
 - `GITHUB_PAT`
     - If any of dependency repo is private, add a github personal access token as a build argument.
 - `GIT_REPO`
