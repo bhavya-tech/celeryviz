@@ -25,7 +25,7 @@ setup(
     description= "A tool for visualising execution of Celery tasks.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    version='0.0.0',
+    version='0.0.1',
     classifiers=classifiers,
     author = "Bhavya Peshavaria",
     packages=find_packages(),

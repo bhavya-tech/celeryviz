@@ -21,7 +21,13 @@ pip install celeryviz
 #### 1. Create a celery project.
   - Use [this gist](https://gist.github.com/bhavya-tech/d937ef45905720014ee12fe332352966) for a minimal example.
 
+```bash
+curl https://gist.githubusercontent.com/bhavya-tech/d937ef45905720014ee12fe332352966/raw/0afac784adfb6b407fa83ce4b19e6f3cab4d80d9/example_app.py -o example_app.py
+```
+
 #### 2. Start the celery worker:
+
+  - Ensure a message broker is running (can use [RabbitMQ](https://www.rabbitmq.com/docs/download) for simplicity)
 
 ```bash
 celery -A example_app worker
