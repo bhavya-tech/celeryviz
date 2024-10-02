@@ -1,6 +1,7 @@
 .env
 .pytest_cache/
 .vscode/
+*/__pycache__/*
 celeryviz.egg-info/
 celeryviz/static/
 dist/*
