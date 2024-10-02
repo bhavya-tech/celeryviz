@@ -1,14 +1,17 @@
 import asyncio
+import logging
 import threading
 
 from celery.events.receiver import EventReceiver
 
 from .constants import *
 
+logger = logging.getLogger(__name__)
+
 
 class EventListener(threading.Thread):
     def onEvent(self, event):
-        print("Event received")
+        logger.debug("Event received")
         asyncio.run_coroutine_threadsafe(
             self.event_handler(event), self.server_loop)
 
@@ -45,4 +48,4 @@ class EventListener(threading.Thread):
                 thread.interrupt_main()
 
             except Exception as exc:
-                print('Connection error: %r' % (exc, ))
+                logger.info('Connection error: %r' % (exc, ))
