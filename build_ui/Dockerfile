@@ -15,6 +15,14 @@ ARG SOURCE="main"
 ARG GIT_REPO="https://github.com/bhavya-tech/celeryviz_with_lib.git"
 
 # Clone the repository and checkout the specified branch
+# Do a fake operation with time so that cache is invalidated
+
+
+# Uncomment the below once the repo is public. This will only invlaidate cache if there
+# is a new commit in the repo. This will be the perfect solution. 
+# ADD "https://api.github.com/repos/bhavya-tech/celeryviz/commits?per_page=1" latest_commit
+ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+
 RUN if [ $GITHUB_PAT != "" ]; then git config --global url."https://${GITHUB_PAT}@github.com/".insteadOf "https://github.com/"; fi
 RUN git clone $GIT_REPO
 
