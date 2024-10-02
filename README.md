@@ -33,7 +33,7 @@ celery -A example_app worker
 celery -A example_app celeryviz
 ```
 
-  -  Open your browser and go to [http://localhost:5000/]()
+  -  Open your browser and go to [http://0.0.0.0:9095/app/]()
 
   - The `attach_log_sender` in the example gist sends logs to CeleryViz.
     - If a custom logger does not support handlers, then monkeypatch the logger to mimic the `attach_log_sender` function.
