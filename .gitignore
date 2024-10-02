@@ -3,3 +3,4 @@
 .vscode/
 celeryviz.egg-info/
 celeryviz/static/
+dist/*

@@ -3,8 +3,11 @@ CeleryViz
 
 A tool for visualising execution of Celery tasks.
 
-<video src="https://github.com/user-attachments/assets/ec6b0f0e-2ad6-4a2c-8928-a7765fd96023"></video>
+[**Live Demo**](https://bhavya-tech.github.io/celeryviz_demo/)
 
+[demo.webm](https://github.com/user-attachments/assets/ec6b0f0e-2ad6-4a2c-8928-a7765fd96023)
+
+This project simplifies debugging of asynchronous Celery tasks by offering a visual representation of the task execution flow. Instead of combing through the log files, developers can use Celeryviz to visually trace and debug task processes more efficiently.
 
 ## Installation
 
