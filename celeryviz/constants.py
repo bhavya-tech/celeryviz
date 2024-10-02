@@ -1,7 +1,7 @@
 CLIENT_NAMESPACE = "/client"
 SERVER_NAMESPACE = "/server"
 
-SOCKETIO_HOST_PORT = 5000
+SOCKETIO_HOST_PORT = 9095
 SOCKETIO_HOST_LOCATION = 'localhost'
 SOCKETIO_HOST_URL = 'http://%s:%d' % (SOCKETIO_HOST_LOCATION,
                                       SOCKETIO_HOST_PORT)

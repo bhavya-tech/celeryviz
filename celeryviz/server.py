@@ -15,9 +15,9 @@ banner = """
 ================================
         🎉 App Launched!
 ================================
-🌐 URL: http://0.0.0.0:5000/app/
+🌐 URL: http://0.0.0.0:%d/app/
 ================================
-"""
+""" % SOCKETIO_HOST_PORT
 
 
 class ClientNapespace(socketio.AsyncNamespace):
