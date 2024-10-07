@@ -77,7 +77,9 @@ We know getting started can feel a bit overwhelming, we all have been there. But
 
 
 ## Code of Conduct 👩‍💻👨‍💻
-We want to keep our community a welcoming and inclusive space for everyone. Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a respectful and positive environment for all contributors.
+We want to keep our community as warm and welcoming as a cup of cutting chai on a rainy day! ☕🌧️🍵 Please take a moment to read and follow our [Code of Conduct](CODE_OF_CONDUCT.md) to help us maintain a respectful and positive environment for all contributors. ✨
+
+⚠️ **Note:** The Code of Conduct will be strictly enforced. Any violations will be taken seriously, and appropriate action will be taken to maintain a safe and respectful community.
 
 
 ## Development Environment Setup
