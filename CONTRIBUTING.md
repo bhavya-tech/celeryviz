@@ -77,9 +77,7 @@ We know getting started can feel a bit overwhelming, we all have been there. But
 
 
 ## Code of Conduct 👩‍💻👨‍💻
-We want to keep our community a welcoming and inclusive space for everyone. Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a respectful and positive environment for all contributors. 
-
-By participating in this project, you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md).
+We want to keep our community a welcoming and inclusive space for everyone. Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a respectful and positive environment for all contributors.
 
 
 ## Development Environment Setup
@@ -88,12 +86,13 @@ By participating in this project, you agree to abide by the [Code of Conduct](CO
     ```bash
     git clone https://github.com/bhavya-tech/celeryviz.git
     ```
-2. Build the webapp:
+2. Build the frontend webapp:
     - The UI webapp is maintained separately in [celeryviz_with_lib](https://github.com/bhavya-tech/celeryviz_with_lib).
     - Run the following command to build the latest version of the standard webapp locally (ensure that [Docker](https://www.docker.com/) is installed):
     ```bash
     docker build --output ./celeryviz/static ./build_ui
     ```
+    (It may take some time to build the webapp for the first time.) 
 
     - For customised builds, the following optional build args can be used:
       - `GITHUB_PAT`: If any of dependency repo is private, add a github personal access token as a build argument.
