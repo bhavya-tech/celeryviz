@@ -1,7 +1,7 @@
 CeleryViz
 =========
 
-A tool for visualising execution of Celery tasks.
+A UI centric tool for visualising Celery task execution.
 
 [**Live Demo**](https://bhavya-tech.github.io/celeryviz_demo/)
 
@@ -41,9 +41,6 @@ celery -A example_app celeryviz
 
   -  Open your browser and go to [http://0.0.0.0:9095/app/]()
 
-  - The `attach_log_sender` in the example gist sends logs to CeleryViz.
-    - If a custom logger does not support handlers, then monkeypatch the logger to mimic the `attach_log_sender` function.
-
 # Contributing
 
 ## Setting up the development environment
@@ -82,3 +79,8 @@ docker build --output ./celeryviz/static --build-arg="GITHUB_PAT=<your github pe
 pip install -e .
 ```
 
+---
+
+# Reporting violations
+
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at [INSERT EMAIL ADDRESS]. All complaints will be reviewed and investigated promptly and fairly.
