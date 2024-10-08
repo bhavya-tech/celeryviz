@@ -2,7 +2,7 @@
 
 ## Welcome to the Project! 🎉
 
-Hey there! We're **thrilled** that you're thinking about contributing to our project. Your ideas, code, and feedback help make this even better, and we're excited to see what you'll bring to the table! 😄
+Hey there! We are **thrilled** that you're thinking about contributing to our project. Your ideas, code, and feedback help make this even better, and we're excited to see what you'll bring to the table! 😄
 
 
 ## How to Get Started 🚀
@@ -25,6 +25,12 @@ Got a wild idea? We want to hear it! Don’t hesitate to suggest cool new featur
 Open an issue on GitHub with the following information:
 - A clear and descriptive title.
 - A detailed description of the enhancement, including use cases and benefits.
+
+
+### Where to report
+  - If the issue to be reported is on the frontend, report it on [celeryviz_frontend_core](https://github.com/bhavya-tech/celeryviz_frontend_core/issues)
+
+  - If the issue to be reported is in the python library, report it on this repository. ([celeryviz](https://github.com/bhavya-tech/celeryviz))
 
 
 ### Submitting Pull Requests
