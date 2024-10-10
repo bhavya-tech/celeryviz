@@ -1,7 +1,7 @@
 CeleryViz
 =========
 
-A tool for visualising execution of Celery tasks.
+A UI centric tool for visualising Celery task execution.
 
 [**Live Demo**](https://bhavya-tech.github.io/celeryviz_demo/)
 
@@ -41,44 +41,8 @@ celery -A example_app celeryviz
 
   -  Open your browser and go to [http://0.0.0.0:9095/app/]()
 
-  - The `attach_log_sender` in the example gist sends logs to CeleryViz.
-    - If a custom logger does not support handlers, then monkeypatch the logger to mimic the `attach_log_sender` function.
+---
 
-# Contributing
+# Reporting violations
 
-## Setting up the development environment
-#### 1. Clone this repository.
-```bash
-git clone https://github.com/bhavya-tech/celeryviz.git
-```
-
-#### 2. Build the webapp
-
-  - The UI webapp is maintained separately in [celeryviz_with_lib](https://github.com/bhavya-tech/celeryviz_with_lib).
-
-  - Run the following command to build the latest version of standard webapp locally (ensure that [docker](https://www.docker.com/) is installed):
-
-```bash
-docker build --output ./celeryviz/static ./build_ui
-```
-
-For customised builds, the following optional build args can be used:
-- `GITHUB_PAT`
-    - If any of dependency repo is private, add a github personal access token as a build argument.
-- `GIT_REPO`
-    - The URL of the repository to build.
-    - Defaults to [bhavya-tech/celeryviz_with_lib](https://github.com/bhavya-tech/celeryviz_with_lib.git)
-- `SOURCE`
-    - The branch of the repository to build. Default is `main`.
-    - A particular commit hash can also be used.
-
-```bash
-docker build --output ./celeryviz/static --build-arg="GITHUB_PAT=<your github personal access token>" ./build_ui
-```
-
-#### 3. Install the package in editable mode:
-
-```bash
-pip install -e .
-```
-
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at [bhavyapeshavaria@gmail.com](mailto:bhavyapeshavaria@gmail.com). All complaints will be reviewed and investigated promptly and fairly.

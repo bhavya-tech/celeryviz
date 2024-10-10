@@ -22,7 +22,7 @@ classifiers = [s.strip() for s in classes.split('\n') if s]
 
 setup(
     name='celeryviz',
-    description= "A tool for visualising execution of Celery tasks.",
+    description= "A UI centric tool for visualising Celery task execution.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     version='0.0.1',
