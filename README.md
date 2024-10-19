@@ -29,11 +29,20 @@ curl https://gist.githubusercontent.com/bhavya-tech/d937ef45905720014ee12fe33235
 
   - Ensure a message broker is running (can use [RabbitMQ](https://www.rabbitmq.com/docs/download) for simplicity)
 
+  - Schedule a task for celery to run:
+
 ```bash
-celery -A example_app worker
+celery -A example_app call example_app.add --args='[1, 100]' --kwargs='{"z":10000}'
+```
+
+  - Run the celery worker.
+```bash
+celery -A example_app worker -l info -E
 ```
 
 #### 3. Start the CeleryViz server:
+
+  - In a new terminal, run the following command:
 
 ```bash
 celery -A example_app celeryviz
