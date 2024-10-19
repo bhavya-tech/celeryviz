@@ -25,11 +25,12 @@ setup(
     description= "A UI centric tool for visualising Celery task execution.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    version='0.0.1',
+    version='0.0.2',
     classifiers=classifiers,
     author = "Bhavya Peshavaria",
     packages=find_packages(),
     package_dir={'celeryviz': 'celeryviz'},
+    include_package_data=True,
     package_data={'celeryviz': ['static/*']},
     install_requires=get_requirements(),
     entry_points={
