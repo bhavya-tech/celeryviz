@@ -1,0 +1,16 @@
+name: Greetings
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: "🚀 **Welcome, First-Time Contributor!** 🚀  \nThanks for jumping in! Whether it’s an issue or a PR, we’re excited to have you on board. Your contribution is on its way to being reviewed. Feel free to explore or reach out with any questions.  \ Let’s make something awesome together! 🌟"
+        pr-message: "🚀 **Welcome, First-Time Contributor!** 🚀  \nThanks for jumping in! Whether it’s an issue or a PR, we’re excited to have you on board. Your contribution is on its way to being reviewed. Feel free to explore or reach out with any questions.  \ Let’s make something awesome together! 🌟"
