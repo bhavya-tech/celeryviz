@@ -18,7 +18,7 @@ RUN flutter config --enable-web
 RUN flutter pub get
 
 # Build the Flutter web app with CanvasKit renderer
-RUN flutter build web --web-renderer canvaskit --release
+RUN flutter build web --release
 
 FROM scratch AS export
 COPY --from=build /app/celeryviz_with_lib/build/web /
