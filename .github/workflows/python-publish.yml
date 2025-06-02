@@ -23,24 +23,14 @@ permissions:
   contents: read
 
 jobs:
-
-  build_ui:
-
+  
+  publish:
     runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build UI
-        run: docker build --output=./celeryviz/static/ --build-arg="GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}" ./build_ui 
-
-  deploy:
-
-    needs: build_ui
-
-    runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v4
+    - name: Build UI
+      run: docker build --output=./celeryviz/static/ --build-arg="GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}" ./build_ui 
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
@@ -55,5 +45,4 @@ jobs:
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
         user: __token__
-        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
+        password: ${{ secrets.PYPI_API_TOKEN }}
