@@ -4,10 +4,9 @@ def get_requirements():
     return open('./requirements.txt').read().splitlines()
 
 classes = """
-    Development Status :: 4 - Beta
+    Development Status :: 1 - Planning
     Intended Audience :: Developers
-    License :: OSI Approved :: BSD License
-    Topic :: System :: Distributed Computing
+    Topic :: System :: Monitoring
     Programming Language :: Python
     Programming Language :: Python :: 3
     Programming Language :: Python :: 3 :: Only
@@ -23,14 +22,15 @@ classifiers = [s.strip() for s in classes.split('\n') if s]
 
 setup(
     name='celeryviz',
-    description= "A gui based celery flower",
+    description= "A UI centric tool for visualising Celery task execution.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    version='0.0.0a',
+    version='0.0.2',
     classifiers=classifiers,
-    author = "Bhavya",
+    author = "Bhavya Peshavaria",
     packages=find_packages(),
     package_dir={'celeryviz': 'celeryviz'},
+    include_package_data=True,
     package_data={'celeryviz': ['static/*']},
     install_requires=get_requirements(),
     entry_points={

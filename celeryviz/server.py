@@ -1,3 +1,4 @@
+import logging
 import os
 
 import socketio
@@ -8,28 +9,38 @@ from .recorder import Recorder
 
 library_path = os.path.dirname(os.path.realpath(__file__))
 
+logger = logging.getLogger(__name__)
+
+banner = """
+================================
+        🎉 App Launched!
+================================
+🌐 URL: http://0.0.0.0:%d/app/
+================================
+""" % SOCKETIO_HOST_PORT
+
 
 class ClientNapespace(socketio.AsyncNamespace):
     def on_connect(self, sid, environ):
-        print("Client connected")
+        logger.info("Client connected")
 
     def on_disconnect(self, sid):
-        print("Client disconnected")
+        logger.info("Client disconnected")
 
     async def on_message(self, sid, data):
-        print('message received with ', data)
+        logger.debug('message received with ', data)
         await self.emit('reply', data=data, namespace=SERVER_NAMESPACE)
 
 
 class ServerNamespace(socketio.AsyncNamespace):
     def on_connect(self, sid, environ):
-        print("Server connected")
+        logger.info("Server connected")
 
     def on_disconnect(self, sid):
-        print("Server disconnected")
+        logger.info("Server disconnected")
 
     async def on_message(self, sid, data):
-        print('message received with ', data)
+        logger.debug('message received with ', data)
         await self.emit(CELERY_DATA_EVENT, data=data, namespace=CLIENT_NAMESPACE)
 
 
@@ -38,7 +49,7 @@ async def frontend_app(request):
 
 
 class Server:
-    sio = socketio.AsyncServer(logger=True, engineio_logger=True, cors_allowed_origins='*', namespaces=[SERVER_NAMESPACE, CLIENT_NAMESPACE],
+    sio = socketio.AsyncServer(cors_allowed_origins='*', namespaces=[SERVER_NAMESPACE, CLIENT_NAMESPACE],
                                async_mode='aiohttp')
 
     def __init__(self, loop, record: bool = False, file: str = DEFAULT_LOG_FILE):
@@ -46,12 +57,13 @@ class Server:
         self.file = file
         if self.record:
             self.recorder = Recorder(file_name=file)
-            print("Recorder enabled")
+            logger.info("Recorder enabled")
 
         self.sio.register_namespace(ServerNamespace(SERVER_NAMESPACE))
         self.sio.register_namespace(ClientNapespace(CLIENT_NAMESPACE))
 
         self.loop = loop
+
         self.app = web.Application()
 
         self.sio.attach(self.app)
@@ -61,9 +73,12 @@ class Server:
             '/', path=f'{library_path}/static/', name='static')
 
     def start(self):
-        web.run_app(self.app, port=SOCKETIO_HOST_PORT, loop=self.loop)
+        logger.info("\n" + banner)
+        web.run_app(self.app, port=SOCKETIO_HOST_PORT, loop=self.loop,
+                    print=None)
 
     async def event_handler(self, data):
+
         if self.record:
             self.recorder.record(data)
 

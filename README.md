@@ -1,9 +1,14 @@
 CeleryViz
 =========
 
-A tool for visualising execution of Celery tasks.
+A UI centric tool for visualising Celery task execution.
 
-# Getting started
+[**Live Demo**](https://bhavya-tech.github.io/celeryviz_demo/)
+
+<video src="https://github.com/user-attachments/assets/ec6b0f0e-2ad6-4a2c-8928-a7765fd96023"></video>
+
+
+This project simplifies debugging of asynchronous Celery tasks by offering a visual representation of the task execution flow. Instead of combing through the log files, developers can use Celeryviz to visually trace and debug task processes more efficiently.
 
 ## Installation
 
@@ -13,59 +18,40 @@ pip install celeryviz
 
 ## Usage
 
-  - First start the celery worker:
+#### 1. Create a celery project.
+  - Use [this gist](https://gist.github.com/bhavya-tech/d937ef45905720014ee12fe332352966) for a minimal example.
 
 ```bash
-celery -A proj worker
+curl https://gist.githubusercontent.com/bhavya-tech/d937ef45905720014ee12fe332352966/raw/0afac784adfb6b407fa83ce4b19e6f3cab4d80d9/example_app.py -o example_app.py
 ```
-(`proj` is the name of your Celery project)
 
-  - Then start the CeleryViz server:
+#### 2. Start the celery worker:
 
+  - Ensure a message broker is running (can use [RabbitMQ](https://www.rabbitmq.com/docs/download) for simplicity)
+
+  - Schedule a task for celery to run:
 
 ```bash
-celery -A proj celeryviz
+celery -A example_app call example_app.add --args='[1, 100]' --kwargs='{"z":10000}'
 ```
 
-  - Open your browser and go to [http://localhost:3000/]()
+  - Run the celery worker.
+```bash
+celery -A example_app worker -l info -E
+```
 
-## Preview
+#### 3. Start the CeleryViz server:
 
-
-# Contributing
-
-## Getting started
-1. Clone this repository.
-
-2. Build the webapp.
-
-The UI webapp is maintained separately in Flutter. 
-
-Run the following command to build the latest version of standard webapp locally (ensure that docker is installed):
+  - In a new terminal, run the following command:
 
 ```bash
-docker build --output ./celeryviz/static ./build_ui
+celery -A example_app celeryviz
 ```
 
-For customised builds, the following build args can be used:
+  -  Open your browser and go to [http://0.0.0.0:9095/app/]()
 
-Args for docker build:
-- `GITHUB_PAT`
-    - If any of dependency repo is private, add a github personal access token as a build argument.
-- `GIT_REPO`
-    - The URL of the repository to build.
-    - Defaults to [bhavya-tech/celeryviz_with_lib](https://github.com/bhavya-tech/celeryviz_with_lib.git)
-- `SOURCE`
-    - The branch of the repository to build. Default is `main`.
-    - A particular commit hash can also be used.
+---
 
-```bash
-docker build --output ./celeryviz/static --build-arg="GITHUB_PAT=<your github personal access token>" ./build_ui
-```
+# Reporting violations
 
-3. Install the package in editable mode:
-
-```bash
-pip install -e .
-```
-
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at [bhavyapeshavaria@gmail.com](mailto:bhavyapeshavaria@gmail.com). All complaints will be reviewed and investigated promptly and fairly.
