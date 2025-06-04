@@ -35,8 +35,8 @@ RUN flutter config --enable-web
 # Now that the repo is cloned, we can run 'flutter pub get'
 RUN flutter pub get
 
-# Build the Flutter web app using CanvasKit renderer
-RUN flutter build web --web-renderer canvaskit --release
+# Build the Flutter web app with CanvasKit renderer
+RUN flutter build web --release
 
 # Final stage: export the build files
 FROM scratch AS export
