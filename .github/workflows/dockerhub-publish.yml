@@ -1,5 +1,5 @@
 
-name: Build and Push Docker Image to Docker Hub
+name: Build and Push the Docker Image to Docker Hub
 
 on:
   release:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  push_to_registry:
+  publish_on_dockerhub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
