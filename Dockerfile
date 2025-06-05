@@ -4,7 +4,7 @@
 
 # Run `docker build --target export --output ./celeryviz/static ./` to build the UI locally.
 
-FROM instrumentisto/flutter AS base
+FROM instrumentisto/flutter:3 AS base
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -17,9 +17,6 @@ FROM base AS build
 
 ARG SOURCE="main"
 ARG GIT_REPO="https://github.com/bhavya-tech/celeryviz_with_lib.git"
-
-# Only invlaidate cache if there is a new commit in the repo. This will be the perfect solution. 
-ADD "https://api.github.com/repos/bhavya-tech/celeryviz/commits?per_page=1" latest_commit
 
 RUN git clone $GIT_REPO
 WORKDIR /app/celeryviz_with_lib
