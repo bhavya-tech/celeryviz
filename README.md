@@ -12,8 +12,15 @@ This project simplifies debugging of asynchronous Celery tasks by offering a vis
 
 ## Installation
 
+1. Python library
+
 ```bash
 pip install celeryviz
+```
+
+2. Docker image
+```bash
+docker pull bhavyatech/celeryviz:0.0.3
 ```
 
 ## Usage
@@ -42,13 +49,29 @@ celery -A example_app worker -l info -E
 
 #### 3. Start the CeleryViz server:
 
+##### 3.1 Using docker image
+There are two ways to run celeryviz:
+
+  1. Pass the broker url 
+```bash
+docker run -p 9095:9095 bhavyatech/celeryviz:0.0.3 celery --broker='<broker_url>' celeryviz
+```
+
+  2. Use the configuration of [celery application](https://docs.celeryq.dev/en/stable/userguide/application.html).
+```bash
+docker run -p 9095:9095 -v $PWD:/app bhavyatech/celeryviz:0.0.3 celery -A example_app.app celeryviz
+```
+
+
+##### 3.2 Using the installed celeryviz python library
   - In a new terminal, run the following command:
 
 ```bash
 celery -A example_app celeryviz
 ```
 
-  -  Open your browser and go to [http://0.0.0.0:9095/app/]()
+#### 4. Connect to the server:
+  -  Open your browser and go to [http://localhost:9095/app/]()
 
 ---
 
