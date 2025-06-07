@@ -12,11 +12,11 @@ library_path = os.path.dirname(os.path.realpath(__file__))
 logger = logging.getLogger(__name__)
 
 banner = """
-================================
+==================================
         🎉 App Launched!
-================================
-🌐 URL: http://0.0.0.0:%d/app/
-================================
+==================================
+🌐 URL: http://localhost:%d/app/
+==================================
 """ % SOCKETIO_HOST_PORT
 
 
