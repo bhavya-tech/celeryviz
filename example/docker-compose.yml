@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    entrypoint: ["/bin/bash", "-c"]
+    command: >
+      "
+      echo 'Purging tasks...';
+      celery -A example_app purge -f;
+
+      echo 'Calling example_app.add task...';
+      celery -A example_app call example_app.add --args='[1, 100]' --kwargs='{\"z\":10000}';
+
+      echo 'Starting Celery worker...';
+      exec celery -A example_app worker --loglevel=info -E;
+      "
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+
+  celeryviz:
+    build:
+      context: ../.
+      dockerfile: Dockerfile
+    command: celery --broker='redis://redis:6379/0' celeryviz
+    depends_on:
+      - redis
+      - celery
+    ports:
+        - "9095:9095"
+
+networks:
+  celeryviz_network:
+    driver: bridge

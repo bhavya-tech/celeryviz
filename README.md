@@ -23,6 +23,14 @@ pip install celeryviz
 docker pull bhavyatech/celeryviz:0.0.3
 ```
 
+## Run the example
+  - To test the example, you can use the provided Docker Compose setup. This will set up a Redis server, a Celery worker, and the CeleryViz server.
+```bash
+cd example
+docker-compose up --build
+```
+(This may take a few minutes to build the first time.)
+
 ## Usage
 
 #### 1. Create a celery project.
