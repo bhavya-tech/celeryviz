@@ -25,7 +25,7 @@ setup(
     description= "A UI centric tool for visualising Celery task execution.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    version='0.0.3',
+    version='0.0.4',
     classifiers=classifiers,
     author = "Bhavya Peshavaria",
     packages=find_packages(),
