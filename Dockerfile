@@ -4,16 +4,15 @@
 # There are two ways to build the UI:
 # 1. Download the prebuilt UI
 #    a. If you want to build complete image with prebuilt UI, use the `celeryviz` target.
-#       Run: `docker build --target celeryviz
+#       Run: `docker build --target celeryviz`
 #    b. If you want to download only the prebuilt UI, use the `prebuilt` target.
-#       Run: `docker build --target webapp-prebuilt --output . .
-#    b. If you want to build only the UI, use the `webapp-build` target.
-#    - The `GIT_REPO` and `SOURCE` build args can be passed for specific builds.
+#       Run: `docker build --target webapp-prebuilt --output . .`
 # 2. Build from source
 #    a. If you want to build complete image from source, use the `celeryviz-with-frontend-build` target.
-#       Run: `docker build --target celeryviz-with-frontend-build
+#       Run: `docker build --target celeryviz-with-frontend-build`
 #    b. If you want to build only the UI, use the `webapp-build` target.
-#       Run: `docker build --target webapp-build --output . .
+#       Run: `docker build --target webapp-build --output . .`
+#    - The `GIT_REPO` and `SOURCE` build args can be passed for specific builds.
 #########################################
 
 
@@ -57,7 +56,7 @@ COPY --from=webapp-compile /app/celeryviz_with_lib/build/web /celeryviz/static/
 # Download and extract the prebuilt webapp
 # This is needed for users who do not want to build the webapp from source.
 FROM alpine:3.14 AS download-and-extract-prebuilt
-ADD https://github.com/bhavya-tech/test_celeryviz_with_lib/releases/download/0.0.1/webapp-build.zip /app/webapp-build.zip
+ADD https://github.com/bhavya-tech/celeryviz_with_lib/releases/download/0.0.1/webapp-build.zip /app/webapp-build.zip
 RUN apk add --no-cache unzip curl && \
     unzip /app/webapp-build.zip -d /app/static && \
     rm /app/webapp-build.zip
