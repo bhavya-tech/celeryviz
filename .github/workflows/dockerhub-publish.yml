@@ -10,7 +10,6 @@ on:
       tag:
         description: 'Docker image tag'
         required: true
-        default: 'latest'
 
 jobs:
   publish_on_dockerhub:
@@ -36,5 +35,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: bhavyatech/celeryviz:${{ github.ref_name || github.event.inputs.tag }}
+          tags: bhavyatech/celeryviz:${{ github.event.inputs.tag || github.ref_name }}
           platforms: linux/amd64,linux/arm64
