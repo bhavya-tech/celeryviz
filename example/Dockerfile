@@ -6,4 +6,3 @@ WORKDIR /app
 RUN pip install redis celery celeryviz
 
 COPY . .
-CMD ["celery", "-A", "example_app", "worker", "--loglevel=info", "-E"]

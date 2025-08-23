@@ -1,10 +1,25 @@
+#########################################
+# Docs                                  #
+#########################################
+# There are two ways to build the UI:
+# 1. Download the prebuilt UI
+#    a. If you want to build complete image with prebuilt UI, use the `celeryviz` target.
+#       Run: `docker build --target celeryviz`
+#    b. If you want to download only the prebuilt UI, use the `prebuilt` target.
+#       Run: `docker build --target webapp-prebuilt --output . .`
+# 2. Build from source
+#    a. If you want to build complete image from source, use the `celeryviz-with-frontend-build` target.
+#       Run: `docker build --target celeryviz-with-frontend-build`
+#    b. If you want to build only the UI, use the `webapp-build` target.
+#       Run: `docker build --target webapp-build --output . .`
+#    - The `GIT_REPO` and `SOURCE` build args can be passed for specific builds.
+#########################################
+
+
 #####################################
 # Docker stages for building the UI #
 #####################################
-
-# Run `docker build --target export --output ./celeryviz/static ./` to build the UI locally.
-
-FROM instrumentisto/flutter:3 AS base
+FROM instrumentisto/flutter:3 AS flutter_build_base
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -13,7 +28,7 @@ WORKDIR /app
 RUN flutter precache
 
 # Build stage
-FROM base AS build
+FROM flutter_build_base AS webapp-compile
 
 ARG SOURCE="main"
 ARG GIT_REPO="https://github.com/bhavya-tech/celeryviz_with_lib.git"
@@ -24,45 +39,70 @@ RUN git checkout $SOURCE
 
 # Enable web support for Flutter
 RUN flutter config --enable-web
-
-# Now that the repo is cloned, we can run 'flutter pub get'
 RUN flutter pub get
-
-# Build the Flutter web app with CanvasKit renderer
 RUN flutter build web --release
 
-# Final stage: export the build files
-# This is needed other wise all the linux files will be copied to the final image.
-FROM scratch AS export
-COPY --from=build /app/celeryviz_with_lib/build/web /
+# Use this stage if static files are needed in the actual folder structure.
+FROM scratch AS webapp-build
+COPY --from=webapp-compile /app/celeryviz_with_lib/build/web /celeryviz/static/
 ###########################################
 ###########################################
 
+
+################################################
+# Docker stage to download the prebuilt webapp #
+################################################
+
+# Download and extract the prebuilt webapp
+# This is needed for users who do not want to build the webapp from source.
+FROM alpine:3.14 AS download-and-extract-prebuilt
+ADD https://github.com/bhavya-tech/celeryviz_with_lib/releases/download/0.0.1/webapp-build.zip /app/webapp-build.zip
+RUN apk add --no-cache unzip curl && \
+    unzip /app/webapp-build.zip -d /app/static && \
+    rm /app/webapp-build.zip
+
+# Use this stage if static files are needed in the actual folder structure.
+FROM scratch AS webapp-prebuilt
+COPY --from=download-and-extract-prebuilt /app/static/ /celeryviz/static/
+###########################################
+###########################################
 
 
 ###########################################
 # Docker stage for the Python application #
 ###########################################
 
-FROM python:3.9
+FROM python:3.9-alpine AS setup-celeryviz-dependency
 
 WORKDIR /app
-
 COPY . .
-
-# Build UI
-COPY --from=export / /app/celeryviz/static/
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir redis
-RUN pip install .
 
 # PYTHONUNBUFFERED: Force stdin, stdout and stderr to be totally unbuffered. (equivalent to `python -u`)
 # PYTHONHASHSEED: Enable hash randomization (equivalent to `python -R`)
 # PYTHONDONTWRITEBYTECODE: Do not write byte files to disk, since we maintain it as readonly. (equivalent to `python -B`)
 ENV PYTHONUNBUFFERED=1 PYTHONHASHSEED=random PYTHONDONTWRITEBYTECODE=1
-
 EXPOSE 9095
+###########################################
+###########################################
 
-CMD ["celery", "celeryviz"]
+
+#######################
+# Final docker stages #
+#######################
+
+# This stage builds celeryviz with the frontend built from the source.
+FROM setup-celeryviz-dependency AS celeryviz-with-frontend-build
+COPY --from=webapp-compile /app/celeryviz_with_lib/build/web /app/celeryviz/static/
+RUN pip install .
+
+# This stage builds celeryviz with the prebuilt frontend.
+FROM setup-celeryviz-dependency AS celeryviz
+WORKDIR /app
+COPY --from=download-and-extract-prebuilt /app/static/ /app/celeryviz/static/
+RUN pip install .
+RUN cd .. && rm -rf /app/
+
