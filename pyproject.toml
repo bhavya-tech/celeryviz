@@ -1,4 +1,4 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools", "setuptools-scm", "python-dotenv"]
 build-backend = "setuptools.build_meta"
 
