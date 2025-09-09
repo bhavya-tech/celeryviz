@@ -31,9 +31,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Load .env file
+        uses: aarcangeli/load-dotenv@v1
+        with:
+          filenames: |
+            config.env
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: bhavyatech/celeryviz:${{ github.event.inputs.tag || github.ref_name }}
           platforms: linux/amd64,linux/arm64
+          build-args: FRONTEND_VERSION=${{ env.CELERYVIZ_FRONTEND_BUNDLED_VERSION }}

@@ -22,7 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build UI
-      run: docker build --target webapp-build --output . . 
+      run: |
+        source config.env
+        docker build --target webapp-prebuilt --output . . --build-arg FRONTEND_VERSION=$CELERYVIZ_FRONTEND_BUNDLED_VERSION
     - name: Set up Python
       uses: actions/setup-python@v3
       with:

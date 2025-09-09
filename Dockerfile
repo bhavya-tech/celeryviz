@@ -56,7 +56,8 @@ COPY --from=webapp-compile /app/celeryviz_with_lib/build/web /celeryviz/static/
 # Download and extract the prebuilt webapp
 # This is needed for users who do not want to build the webapp from source.
 FROM alpine:3.14 AS download-and-extract-prebuilt
-ADD https://github.com/bhavya-tech/celeryviz_with_lib/releases/download/0.0.1/webapp-build.zip /app/webapp-build.zip
+ARG FRONTEND_VERSION="main"
+ADD https://github.com/bhavya-tech/celeryviz_with_lib/releases/download/$FRONTEND_VERSION/webapp-build.zip /app/webapp-build.zip
 RUN apk add --no-cache unzip curl && \
     unzip /app/webapp-build.zip -d /app/static && \
     rm /app/webapp-build.zip
