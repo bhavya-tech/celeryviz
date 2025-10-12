@@ -8,40 +8,27 @@ import socketio
 from celeryviz.recorder import Recorder
 from celeryviz.constants import *
 
-banner = """
+banner = f"""
 ==================================
         🎉 App Launched!
 ==================================
-🌐 URL: http://localhost:%d/app/
+🌐 URL: http://localhost:{SOCKETIO_HOST_PORT}/app/
 ==================================
-""" % SOCKETIO_HOST_PORT
-
+"""
 
 logger = logging.getLogger(__name__)
 
 
 class ClientNamespace(socketio.AsyncNamespace):
     def on_connect(self, sid, environ):
-        logger.info("Client connected")
+        logger.info(f"Client connected: {sid}")
 
     def on_disconnect(self, sid):
-        logger.info("Client disconnected")
+        logger.info(f"Client disconnected: {sid}")
 
     async def on_message(self, sid, data):
-        logger.debug('message received with ', data)
+        logger.debug(f'message received with {data}')
         await self.emit('reply', data=data, namespace=SERVER_NAMESPACE)
-
-
-class ServerNamespace(socketio.AsyncNamespace):
-    def on_connect(self, sid, environ):
-        logger.info("Server connected")
-
-    def on_disconnect(self, sid):
-        logger.info("Server disconnected")
-
-    async def on_message(self, sid, data):
-        logger.debug('message received with ', data)
-        await self.emit(CELERY_DATA_EVENT, data=data, namespace=CLIENT_NAMESPACE)
 
 
 class Server:
@@ -62,7 +49,6 @@ class Server:
         self.app.get("/", response_class=HTMLResponse)(self.frontend_app)
         self.app.mount("/", StaticFiles(directory="celeryviz/static"), name="static")
         self.sio.register_namespace(ClientNamespace('/client'))
-        self.sio.register_namespace(ServerNamespace('/server'))
 
     def frontend_app(self):
         return HTMLResponse(content=open("celeryviz/static/index.html").read(), status_code=200)
@@ -79,7 +65,3 @@ class Server:
         config = Config(app=self.app, host=SOCKETIO_HOST_LOCATION, port=SOCKETIO_HOST_PORT)
         server = UvicornServer(config=config)
         self.loop.run_until_complete(server.serve())
-
-if __name__=="__main__":
-    server = Server(loop=asyncio.new_event_loop())
-    server.start()
