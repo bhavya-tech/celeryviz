@@ -1,6 +1,7 @@
 import multiprocessing
 import threading
 import time
+from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock
 from celery import Celery
@@ -25,21 +26,27 @@ class ClientThread(threading.Thread):
         self.client.wait()
 
 
-# This test is not working. It is not able to connect to the server. I am not sure why.
-# Keeping it disconnected until its resolved, maybe someone can lok into this.
-class TestIntegration():
+class MockCtx:
+    """
+    Custom mock context class as unittest.mock.Mock does not pickle.
+    """
+
+    def __init__(self, app):
+        self.obj = SimpleNamespace()
+        self.obj.app = app
+
+
+class TestIntegration(unittest.TestCase):
     """
     This test the backend end to end. It starts the server and client and checks if the client receives the event.
-
     """
 
     payload = {"utcoffset": -6, "uuid": "4897c640-a023-4cb8-ae8e-1df4641a3ba1", "name": "basic_task.add", "args": "()", "kwargs": "{}",
                "root_id": "4897c640-a023-4cb8-ae8e-1df4641a3ba1", "parent_id": None, "retries": 0, "eta": None, "expires": None, "timestamp": 1685367125.9317474, "type": "task-received"}
 
     def setUp(self) -> None:
-        self.app = Celery('example_app')
-        self.mock_ctx = Mock()
-        self.mock_ctx.obj.app = self.app
+        self.app = Celery('example_app', broker='redis://127.0.0.1:6379/0')
+        self.mock_ctx = MockCtx(self.app)
 
         self.on_event = Mock()
         self.server_process = multiprocessing.Process(

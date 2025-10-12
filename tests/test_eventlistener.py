@@ -25,7 +25,7 @@ class EventHandlerProcess(threading.Thread):
 class TestEventListener(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.app = Celery('example_app')
+        self.app = Celery('example_app', broker='redis://127.0.0.1:6379/0')
         self.event_handler_process = EventHandlerProcess(
             self.app, AsyncMock(), daemon=True)
         return super().setUp()
