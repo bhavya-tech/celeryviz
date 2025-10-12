@@ -5,3 +5,4 @@
 celeryviz.egg-info/
 celeryviz/static/
 dist/*
+*/.DS_Store

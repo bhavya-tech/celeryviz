@@ -11,26 +11,20 @@ name: Upload Python Package
 on:
   release:
     types: [published]
-  
-  workflow_dispatch:
-    inputs:
-      environment:
-        type: environment
-        description: 'Manually trigger a deployment to the test PyPI environment'
-
+  workflow_dispatch: {}
 
 permissions:
   contents: read
 
 jobs:
-  
   publish:
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-latest 
     steps:
     - uses: actions/checkout@v4
     - name: Build UI
-      run: docker build --target export --output ./celeryviz/static ./ 
+      run: |
+        source config.env
+        docker build --target webapp-prebuilt --output . . --build-arg FRONTEND_VERSION=$CELERYVIZ_FRONTEND_BUNDLED_VERSION
     - name: Set up Python
       uses: actions/setup-python@v3
       with:

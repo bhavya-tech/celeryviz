@@ -1,7 +1,11 @@
+from dotenv import load_dotenv
+import os
 from setuptools import setup, find_packages
 
 def get_requirements():
     return open('./requirements.txt').read().splitlines()
+
+load_dotenv("config.env")
 
 classes = """
     Development Status :: 1 - Planning
@@ -25,7 +29,7 @@ setup(
     description= "A UI centric tool for visualising Celery task execution.",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    version='0.0.3',
+    version=os.getenv("CELERYVIZ_PYTHON_VERSION", "latest"),
     classifiers=classifiers,
     author = "Bhavya Peshavaria",
     packages=find_packages(),
