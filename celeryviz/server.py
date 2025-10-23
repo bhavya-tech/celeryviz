@@ -52,7 +52,7 @@ class Server:
 
     def frontend_app(self):
         return HTMLResponse(content=open("celeryviz/static/index.html").read(), status_code=200)
-    
+
     async def event_handler(self, data):
 
         if self.record:
@@ -62,6 +62,6 @@ class Server:
 
     def start(self):
         logger.info(banner)
-        config = Config(app=self.app, host=SOCKETIO_HOST_LOCATION, port=SOCKETIO_HOST_PORT)
+        config = Config(app=self.app, host='0.0.0.0', port=SOCKETIO_HOST_PORT)
         server = UvicornServer(config=config)
         self.loop.run_until_complete(server.serve())
