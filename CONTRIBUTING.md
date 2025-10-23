@@ -59,6 +59,7 @@ Open an issue on GitHub with the following information:
    Get creative! Add your feature or fix that pesky bug. And remember: no idea is too small we appreciate everything!
 
 5. 🧪 **Test your changes**
+  - Ensure redis is running locally on default port `6379` and no other services are using `/0` channel before running tests.
 
     ```bash
     pytest
