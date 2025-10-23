@@ -46,7 +46,7 @@ class Server:
             logger.info("Recorder enabled")
 
         self.app.mount("/socket.io", self.socket_app)
-        self.app.get("/", response_class=HTMLResponse)(self.frontend_app)
+        self.app.get("/app/", response_class=HTMLResponse)(self.frontend_app)
         self.app.mount("/", StaticFiles(directory="celeryviz/static"), name="static")
         self.sio.register_namespace(ClientNamespace('/client'))
 
