@@ -28,7 +28,7 @@ services:
       context: ../.
       dockerfile: Dockerfile
       target: celeryviz
-    
+
     command: celery --broker='redis://redis:6379/0' celeryviz
     depends_on:
       - redis

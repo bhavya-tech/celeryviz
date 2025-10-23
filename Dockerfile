@@ -56,10 +56,17 @@ COPY --from=webapp-compile /app/celeryviz_with_lib/build/web /celeryviz/static/
 # Download and extract the prebuilt webapp
 # This is needed for users who do not want to build the webapp from source.
 FROM alpine:3.14 AS download-and-extract-prebuilt
-ARG FRONTEND_VERSION="main"
-ADD https://github.com/bhavya-tech/celeryviz_with_lib/releases/download/$FRONTEND_VERSION/webapp-build.zip /app/webapp-build.zip
-RUN apk add --no-cache unzip curl && \
-    unzip /app/webapp-build.zip -d /app/static && \
+ARG FRONTEND_VERSION="latest"
+RUN apk add --no-cache unzip curl && mkdir /app/
+RUN if [ "$FRONTEND_VERSION" = "latest" ]; then \
+        curl -L -o /app/webapp-build.zip \
+            https://github.com/bhavya-tech/celeryviz_with_lib/releases/latest/download/webapp-build.zip; \
+    else \
+        curl -L -o /app/webapp-build.zip \
+            https://github.com/bhavya-tech/celeryviz_with_lib/releases/download/$FRONTEND_VERSION/webapp-build.zip; \
+    fi
+
+RUN unzip /app/webapp-build.zip -d /app/static && \
     rm /app/webapp-build.zip
 
 # Use this stage if static files are needed in the actual folder structure.
@@ -102,8 +109,6 @@ RUN pip install .
 
 # This stage builds celeryviz with the prebuilt frontend.
 FROM setup-celeryviz-dependency AS celeryviz
-WORKDIR /app
 COPY --from=download-and-extract-prebuilt /app/static/ /app/celeryviz/static/
 RUN pip install .
-RUN cd .. && rm -rf /app/
 

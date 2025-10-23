@@ -1,81 +1,57 @@
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+import asyncio
+from uvicorn import Config, Server as UvicornServer
 import logging
-import os
-
+from fastapi import FastAPI
 import socketio
-from aiohttp import web
+from celeryviz.recorder import Recorder
+from celeryviz.constants import *
 
-from .constants import *
-from .recorder import Recorder
-
-library_path = os.path.dirname(os.path.realpath(__file__))
-
-logger = logging.getLogger(__name__)
-
-banner = """
+banner = f"""
 ==================================
         🎉 App Launched!
 ==================================
-🌐 URL: http://localhost:%d/app/
+🌐 URL: http://localhost:{SOCKETIO_HOST_PORT}/app/
 ==================================
-""" % SOCKETIO_HOST_PORT
+"""
+
+logger = logging.getLogger(__name__)
 
 
-class ClientNapespace(socketio.AsyncNamespace):
+class ClientNamespace(socketio.AsyncNamespace):
     def on_connect(self, sid, environ):
-        logger.info("Client connected")
+        logger.info(f"Client connected: {sid}")
 
     def on_disconnect(self, sid):
-        logger.info("Client disconnected")
+        logger.info(f"Client disconnected: {sid}")
 
     async def on_message(self, sid, data):
-        logger.debug('message received with ', data)
+        logger.debug(f'message received with {data}')
         await self.emit('reply', data=data, namespace=SERVER_NAMESPACE)
 
 
-class ServerNamespace(socketio.AsyncNamespace):
-    def on_connect(self, sid, environ):
-        logger.info("Server connected")
-
-    def on_disconnect(self, sid):
-        logger.info("Server disconnected")
-
-    async def on_message(self, sid, data):
-        logger.debug('message received with ', data)
-        await self.emit(CELERY_DATA_EVENT, data=data, namespace=CLIENT_NAMESPACE)
-
-
-async def frontend_app(request):
-    return web.FileResponse(f'{library_path}/static/index.html')
-
-
 class Server:
-    sio = socketio.AsyncServer(cors_allowed_origins='*', namespaces=[SERVER_NAMESPACE, CLIENT_NAMESPACE],
-                               async_mode='aiohttp')
-
-    def __init__(self, loop, record: bool = False, file: str = DEFAULT_LOG_FILE):
+    def __init__(self, loop: asyncio.AbstractEventLoop, record: bool = False, file: str = DEFAULT_LOG_FILE):
+        self.sio = socketio.AsyncServer(cors_allowed_origins='*', namespaces=[SERVER_NAMESPACE, CLIENT_NAMESPACE],
+                            async_mode='asgi')
+        self.socket_app = socketio.ASGIApp(self.sio)
+        self.app = FastAPI()
         self.record = record
+        self.loop = loop
         self.file = file
+
         if self.record:
             self.recorder = Recorder(file_name=file)
             logger.info("Recorder enabled")
 
-        self.sio.register_namespace(ServerNamespace(SERVER_NAMESPACE))
-        self.sio.register_namespace(ClientNapespace(CLIENT_NAMESPACE))
+        self.app.mount("/socket.io", self.socket_app)
+        self.app.get("/app/", response_class=HTMLResponse)(self.frontend_app)
+        self.app.mount("/", StaticFiles(directory="celeryviz/static"), name="static")
+        self.sio.register_namespace(ClientNamespace('/client'))
 
-        self.loop = loop
-
-        self.app = web.Application()
-
-        self.sio.attach(self.app)
-
-        self.app.router.add_get('/app/', frontend_app)
-        self.app.router.add_static(
-            '/', path=f'{library_path}/static/', name='static')
-
-    def start(self):
-        logger.info("\n" + banner)
-        web.run_app(self.app, port=SOCKETIO_HOST_PORT, loop=self.loop,
-                    print=None)
+    def frontend_app(self):
+        return HTMLResponse(content=open("celeryviz/static/index.html").read(), status_code=200)
 
     async def event_handler(self, data):
 
@@ -83,3 +59,9 @@ class Server:
             self.recorder.record(data)
 
         await self.sio.emit(CELERY_DATA_EVENT, data=data, namespace=CLIENT_NAMESPACE)
+
+    def start(self):
+        logger.info(banner)
+        config = Config(app=self.app, host='0.0.0.0', port=SOCKETIO_HOST_PORT)
+        server = UvicornServer(config=config)
+        self.loop.run_until_complete(server.serve())

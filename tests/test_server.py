@@ -1,8 +1,11 @@
+import asyncio
 import unittest
 from unittest.mock import Mock, patch
 
+from fastapi.testclient import TestClient
+
 from celeryviz.server import Server
-from utils import ServerTestCase
+import celeryviz.server
 
 
 class TestServerFeatures(unittest.TestCase):
@@ -14,10 +17,16 @@ class TestServerFeatures(unittest.TestCase):
             mock_recorder.assert_called_once_with(file_name=mock_filename)
 
 
-class TestServerRunning(ServerTestCase):
-    def test_server_running(self):
-        async def test(client):
-            resp = await client.get('/app/')
-            self.assertEqual(resp.status, 200)
+class TestServerRunning(unittest.TestCase):
+    def setUp(self) -> None:
+        self.server = celeryviz.server.Server(loop=asyncio.new_event_loop())
+        return super().setUp()
 
-        self.client_test(test)
+    def test_is_webapp_served(self):
+        """
+        Test if the web app is being served at the correct endpoint.
+        """
+
+        with TestClient(self.server.app, base_url='http://localhost:9095') as client:
+            response = client.get('/app/')
+            self.assertEqual(response.status_code, 200)
