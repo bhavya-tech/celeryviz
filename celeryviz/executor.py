@@ -1,14 +1,12 @@
-CLIENT_NAMESPACE = "/client"
-SERVER_NAMESPACE = "/server"
+import asyncio
+from .event_receiver import EventListener
+from .server import Server
 
-DEFAULT_PORT = 9095
-SOCKETIO_HOST_LOCATION = 'localhost'
-SOCKETIO_HOST_URL = 'http://%s:%d' % (SOCKETIO_HOST_LOCATION,
-                                           DEFAULT_PORT)
-
-SOCKETIO_CLIENT_NAMESPACE_URL = 'http://%s%s' % (
-    SOCKETIO_HOST_URL, CLIENT_NAMESPACE)
-
-CELERY_DATA_EVENT = 'celery_events_data'
-
-DEFAULT_LOG_FILE = './log.ndjson'
+def starter(ctx, record, file, port):
+    app = ctx.obj.app
+    app.control.enable_events()
+    server_loop = asyncio.get_event_loop()
+    server = Server(server_loop, record=record, file=file, port=port)
+    event_listener = EventListener(app, server.event_handler, server_loop)
+    event_listener.start()
+    server.start()
