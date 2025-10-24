@@ -22,7 +22,7 @@ class ClientThread(threading.Thread):
 
     def run(self):
         self.client.connect('http://localhost:%s/' %
-                       SOCKETIO_HOST_PORT, wait=True, wait_timeout=5)
+                       DEFAULT_PORT, wait=True, wait_timeout=5)
         self.client.wait()
 
 
@@ -50,7 +50,7 @@ class TestIntegration(unittest.TestCase):
 
         self.on_event = Mock()
         self.server_process = multiprocessing.Process(
-            target=starter, args=[self.mock_ctx, False, ""], daemon=True)
+            target=starter, args=[self.mock_ctx, False, "", DEFAULT_PORT], daemon=True)
         self.client_thread = ClientThread(self.on_event)
         return super().setUp()
 
