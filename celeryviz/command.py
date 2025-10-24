@@ -3,7 +3,7 @@ import logging
 import click
 from celery.bin.base import CeleryCommand
 
-from .constants import DEFAULT_LOG_FILE
+from .constants import DEFAULT_LOG_FILE, DEFAULT_PORT
 from .executor import starter
 
 LOGGING_LEVELS = {
@@ -24,7 +24,7 @@ def set_log_level(log_level):
 
 @click.command(cls=CeleryCommand,
                context_settings={
-               'ignore_unknown_options': True})
+                   'ignore_unknown_options': True})
 @click.option('--record',
               default=False,
               is_flag=True)
@@ -35,7 +35,11 @@ def set_log_level(log_level):
 @click.option('--file',
               default=DEFAULT_LOG_FILE,
               type=click.Path())
+@click.option('-p', '--port',
+              default=DEFAULT_PORT,
+              type=int,
+              help=f'Port to run the web server on (default: {DEFAULT_PORT})')
 @click.pass_context
-def celeryviz(ctx, record, log_level, file):
+def celeryviz(ctx, record, log_level, file, port):
     set_log_level(log_level)
-    starter(ctx, record, file)
+    starter(ctx, record, file, port)
