@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import Mock, patch
 
+from celeryviz.constants import DEFAULT_PORT
 from celeryviz.executor import starter
 
 
@@ -13,7 +14,7 @@ class TestStarter(unittest.TestCase):
         with patch('celeryviz.executor.EventListener') as mock_event_listener,\
                 patch('celeryviz.executor.Server') as mock_server:
 
-            starter(mock_ctx, mock_record, "")
+            starter(mock_ctx, mock_record, "", DEFAULT_PORT)
 
             # Check if events are being enabled
             mock_ctx.obj.app.control.enable_events.assert_called_once()

@@ -6,13 +6,15 @@ import logging
 from fastapi import FastAPI
 import socketio
 from celeryviz.recorder import Recorder
-from celeryviz.constants import *
+from celeryviz.constants import (
+    DEFAULT_PORT, SERVER_NAMESPACE, CLIENT_NAMESPACE, CELERY_DATA_EVENT, DEFAULT_LOG_FILE
+)
 
-banner = f"""
+banner_template = f"""
 ==================================
         🎉 App Launched!
 ==================================
-🌐 URL: http://localhost:{SOCKETIO_HOST_PORT}/app/
+🌐 URL: http://localhost:%d/app/
 ==================================
 """
 
@@ -32,14 +34,15 @@ class ClientNamespace(socketio.AsyncNamespace):
 
 
 class Server:
-    def __init__(self, loop: asyncio.AbstractEventLoop, record: bool = False, file: str = DEFAULT_LOG_FILE):
+    def __init__(self, loop: asyncio.AbstractEventLoop, record: bool = False, file: str = DEFAULT_LOG_FILE, port: int = DEFAULT_PORT):
         self.sio = socketio.AsyncServer(cors_allowed_origins='*', namespaces=[SERVER_NAMESPACE, CLIENT_NAMESPACE],
-                            async_mode='asgi')
+                                    async_mode='asgi')
         self.socket_app = socketio.ASGIApp(self.sio)
         self.app = FastAPI()
         self.record = record
         self.loop = loop
         self.file = file
+        self.port = port
 
         if self.record:
             self.recorder = Recorder(file_name=file)
@@ -61,7 +64,8 @@ class Server:
         await self.sio.emit(CELERY_DATA_EVENT, data=data, namespace=CLIENT_NAMESPACE)
 
     def start(self):
+        banner = banner_template % self.port
         logger.info(banner)
-        config = Config(app=self.app, host='0.0.0.0', port=SOCKETIO_HOST_PORT)
+        config = Config(app=self.app, host='0.0.0.0', port=self.port)
         server = UvicornServer(config=config)
         self.loop.run_until_complete(server.serve())
