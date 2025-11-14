@@ -9,11 +9,22 @@ from .constants import *
 logger = logging.getLogger(__name__)
 
 
+async def enable_events(app):
+    # Give some time for the worker to be fully online
+    await asyncio.sleep(1)
+    app.control.enable_events()
+
+
 class EventListener(threading.Thread):
     def onEvent(self, event):
         logger.debug("Event received")
         asyncio.run_coroutine_threadsafe(
             self.event_handler(event), self.server_loop)
+        
+    def onWorkerJoined(self, event):
+        logger.debug("Worker joined: %s", event['hostname'])
+        asyncio.run_coroutine_threadsafe(
+            enable_events(self.app), self.server_loop)
 
     def __init__(self, app, event_handler, server_loop):
         super().__init__(daemon=True)
@@ -31,6 +42,7 @@ class EventListener(threading.Thread):
             'task-retried': self.onEvent,
             'task-rejected': self.onEvent,
             'task-log': self.onEvent,
+            'worker-online': self.onWorkerJoined,
         }
         while True:
             try:

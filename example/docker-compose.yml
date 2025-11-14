@@ -15,7 +15,7 @@ services:
       celery -A example_app call example_app.add --args='[1, 100]' --kwargs='{\"z\":10000}';
 
       echo 'Starting Celery worker...';
-      exec celery -A example_app worker --loglevel=info -E;
+      exec celery -A example_app worker --loglevel=info;
       "
     build:
       context: .

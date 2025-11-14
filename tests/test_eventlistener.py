@@ -1,3 +1,4 @@
+import asyncio
 import threading
 import time
 import unittest
@@ -14,7 +15,8 @@ class EventHandlerProcess(threading.Thread):
     Its not possile to kill a thread.
     """
     def __init__(self, app, event_handler, *args, **kwargs):
-        self.event_listener = EventListener(app, event_handler, Mock())
+        self.server_loop = asyncio.new_event_loop()
+        self.event_listener = EventListener(app, event_handler, self.server_loop)
         self.event_listener.daemon = True
 
         super().__init__(*args, **kwargs)
@@ -46,3 +48,19 @@ class TestEventListener(unittest.TestCase):
 
             time.sleep(0.5)
             mock_event_handler.assert_called_once()
+
+    def test_enable_events_on_worker_online(self):
+        """
+        This tests that when a worker comes online, the enable_events is called
+        """
+        import celeryviz.event_receiver
+
+        with self.app.events.default_dispatcher() as dispatcher:
+            mock_enable_events = AsyncMock()
+            celeryviz.event_receiver.enable_events = mock_enable_events
+            self.event_handler_process.start()
+            time.sleep(0.5)
+            dispatcher.send('worker-online')
+
+            time.sleep(1.5)
+            mock_enable_events.assert_called_once()
