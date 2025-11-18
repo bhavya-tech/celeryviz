@@ -3,7 +3,7 @@ import logging
 import click
 from celery.bin.base import CeleryCommand
 
-from .constants import DEFAULT_LOG_FILE, DEFAULT_PORT
+from .constants import DEFAULT_PORT
 from .executor import starter
 
 LOGGING_LEVELS = {
@@ -25,21 +25,23 @@ def set_log_level(log_level):
 @click.command(cls=CeleryCommand,
                context_settings={
                    'ignore_unknown_options': True})
-@click.option('--record',
-              default=False,
-              is_flag=True)
 @click.option('-l', '--log-level',
               default='INFO',
-              type=click.Choice(LOGGING_LEVELS.keys(),
+              type=click.Choice(list(LOGGING_LEVELS.keys()),
                                 case_sensitive=False))
-@click.option('--file',
-              default=DEFAULT_LOG_FILE,
+@click.option('--record-file',
+              help='Path to the log file to record events to. (.jsonl or .ndjson only accepted)',
               type=click.Path())
+
+@click.option('--no-socketio',
+              is_flag=True,
+              help='Disable Socket.IO event support.')
+
 @click.option('-p', '--port',
               default=DEFAULT_PORT,
               type=int,
               help=f'Port to run the web server on (default: {DEFAULT_PORT})')
 @click.pass_context
-def celeryviz(ctx, record, log_level, file, port):
+def celeryviz(ctx, log_level, record_file, no_socketio, port):
     set_log_level(log_level)
-    starter(ctx, record, file, port)
+    starter(ctx, record_file, no_socketio, port)

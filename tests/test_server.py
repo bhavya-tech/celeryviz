@@ -1,20 +1,9 @@
 import asyncio
 import unittest
-from unittest.mock import Mock, patch
 
 from fastapi.testclient import TestClient
 
-from celeryviz.server import Server
 import celeryviz.server
-
-
-class TestServerFeatures(unittest.TestCase):
-    def test_recorder(self):
-        mock_filename = str(self) + 'mock_filename'
-
-        with patch('celeryviz.server.Recorder') as mock_recorder:
-            Server(Mock(), record=True, file=mock_filename)
-            mock_recorder.assert_called_once_with(file_name=mock_filename)
 
 
 class TestServerRunning(unittest.TestCase):
