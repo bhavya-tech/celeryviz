@@ -10,6 +10,10 @@ from socketio import Client
 
 from celeryviz.constants import *
 from celeryviz.executor import starter
+from tests.utils import get_free_ephemeral_port
+
+
+DEFAULT_PORT = get_free_ephemeral_port()
 
 
 class ClientThread(threading.Thread):
@@ -45,12 +49,12 @@ class TestIntegration(unittest.TestCase):
                "root_id": "4897c640-a023-4cb8-ae8e-1df4641a3ba1", "parent_id": None, "retries": 0, "eta": None, "expires": None, "timestamp": 1685367125.9317474, "type": "task-received"}
 
     def setUp(self) -> None:
-        self.app = Celery('example_app', broker='redis://127.0.0.1:6379/0')
+        self.app = Celery('example_app', broker='redis://127.0.0.1:6379/1')
         self.mock_ctx = MockCtx(self.app)
 
         self.on_event = Mock()
         self.server_process = multiprocessing.Process(
-            target=starter, args=[self.mock_ctx, False, "", DEFAULT_PORT], daemon=True)
+            target=starter, args=[self.mock_ctx, None, False, DEFAULT_PORT], daemon=True)
         self.client_thread = ClientThread(self.on_event)
         return super().setUp()
 

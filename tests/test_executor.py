@@ -9,12 +9,11 @@ class TestStarter(unittest.TestCase):
     def test_starter(self):
 
         mock_ctx = Mock()
-        mock_record = Mock()
 
         with patch('celeryviz.executor.EventListener') as mock_event_listener,\
                 patch('celeryviz.executor.Server') as mock_server:
 
-            starter(mock_ctx, mock_record, "", DEFAULT_PORT)
+            starter(mock_ctx, None, True, DEFAULT_PORT)
 
             # Check if events are being enabled
             mock_ctx.obj.app.control.enable_events.assert_called_once()
