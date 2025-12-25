@@ -1,7 +1,7 @@
 import asyncio
 from .event_receiver import EventListener
 from .server import Server
-from .data_service import FileEventSink, SocketioEventSink
+from .data_service import get_event_sinks
 
 
 def starter(ctx, record_file_path, no_socketio, port):
@@ -19,15 +19,3 @@ def starter(ctx, record_file_path, no_socketio, port):
     server.start()
 
 
-def get_event_sinks(record_file_path, no_socketio):
-    data_sinks = []
-    
-    if record_file_path:
-        file_sink = FileEventSink(record_file_path)
-        data_sinks.append(file_sink)
-
-    if not no_socketio:
-        socketio_sink = SocketioEventSink()
-        data_sinks.append(socketio_sink)
-
-    return data_sinks
