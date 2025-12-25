@@ -5,8 +5,8 @@ import asyncio
 from uvicorn import Config, Server as UvicornServer
 import logging
 from fastapi import FastAPI
-from celeryviz.data_service.base import AbstractEventSink
-from celeryviz.data_service.socketio_event_sink import SocketioEventSink
+from celeryviz.data_service import AbstractEventSink
+from celeryviz.data_service import SocketioEventSink
 from celeryviz.constants import DEFAULT_PORT
 
 banner_template = f"""

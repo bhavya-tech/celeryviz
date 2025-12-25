@@ -7,8 +7,7 @@ import asyncio
 
 from uvicorn import Config, Server as UvicornServer
 
-from celeryviz.data_service.file_event_sink import FileEventSink
-from celeryviz.data_service.socketio_event_sink import SocketioEventSink 
+from celeryviz.data_service import FileEventSink, SocketioEventSink
 from celeryviz.constants import CELERY_DATA_EVENT, CLIENT_NAMESPACE
 from tests.utils import get_free_ephemeral_port
 

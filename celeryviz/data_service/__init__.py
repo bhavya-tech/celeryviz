@@ -1,3 +1,4 @@
+from .base import AbstractEventSink, AbstractEventRetriever
 from .file_event_sink import FileEventSink
 from .socketio_event_sink import SocketioEventSink
 
@@ -14,3 +15,7 @@ def get_event_sinks(record_file_path, no_socketio):
         data_sinks.append(socketio_sink)
 
     return data_sinks
+
+
+__all__ = ["FileEventSink", "SocketioEventSink", "get_event_sinks", "AbstractEventSink",
+           "AbstractEventRetriever"]
