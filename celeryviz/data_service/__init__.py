@@ -1,7 +1,7 @@
 from .base import AbstractEventSink, AbstractEventRetriever
 from .file_event_sink import FileEventSink
 from .socketio_event_sink import SocketioEventSink
-from .clickhose_datasource import ClickhouseSink
+from .clickhose_datasource import ClickhouseSink, ClickhouseRetriever, ClickhouseConfig
 
 
 def get_event_sinks(record_file_path, no_socketio, **kwargs):
@@ -15,14 +15,24 @@ def get_event_sinks(record_file_path, no_socketio, **kwargs):
         socketio_sink = SocketioEventSink()
         data_sinks.append(socketio_sink)
 
-
-    if kwargs.get("clickhouse_enable"):
-        clickhouse_config = {key: kwargs.get(key) for key in ClickhouseSink.config_options}
+    if ClickhouseConfig.is_enabled(kwargs):
+        clickhouse_config = ClickhouseConfig(kwargs)
         clickhouse_sink = ClickhouseSink(clickhouse_config)
         data_sinks.append(clickhouse_sink)
 
     return data_sinks
 
 
+def get_event_retrievers(**kwargs):
+    data_retrievers = []
+
+    if ClickhouseConfig.is_enabled(kwargs):
+        clickhouse_config = ClickhouseConfig(kwargs)
+        clickhouse_retriever = ClickhouseRetriever(clickhouse_config)
+        data_retrievers.append(clickhouse_retriever)
+
+    return data_retrievers
+
+
 __all__ = ["FileEventSink", "SocketioEventSink", "get_event_sinks", "AbstractEventSink",
-           "AbstractEventRetriever"]
+           "AbstractEventRetriever", "get_event_retrievers"]

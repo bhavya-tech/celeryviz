@@ -1,38 +1,88 @@
 import asyncio
-from datetime import datetime, timezone
+from datetime import datetime
 from uuid import UUID
-from typing import Any, List
-from celeryviz.data_service.base import AbstractEventSink, AbstractEventRetriever
+from typing import Any, List, Sequence
+from celeryviz.data_service.base import AbstractConfigurableService, AbstractEventSink, AbstractEventRetriever
 from clickhouse_connect import get_client
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-class ClickhouseSink(AbstractEventSink):
-    """Clickhouse implementation of the AbstractEventSink."""
+class ClickhouseConfig(AbstractConfigurableService):
 
     config_options = ('clickhouse_host', 'clickhouse_port', 'clickhouse_database',
                      'clickhouse_username', 'clickhouse_password', 'clickhouse_engine')
+    
+    @staticmethod
+    def is_enabled(config: dict) -> bool:
+        return config.get("clickhouse_enable", False)
+    
+    def __init__(self, config: dict):
+        self.config = config
 
-    def __init__(self, clickhouse_config: dict):
+    def get_connection_config(self) -> dict:
+        return {
+            "host": self.config.get("clickhouse_host"),
+            "port": self.config.get("clickhouse_port", 8123),
+            "username": self.config.get("clickhouse_username"),
+            "password": self.config.get("clickhouse_password", ""),
+            "database": self.config.get("clickhouse_database", "default")
+        }
+    
+    def get_engine(self) -> str:
+        return self.config.get("clickhouse_engine", "MergeTree")
+
+
+class ClickhouseSink(AbstractEventSink):
+    """Clickhouse implementation of the AbstractEventSink."""
+
+    def __init__(self, clickhouse_config: ClickhouseConfig):
         logger.info("Initializing ClickhouseSink")
 
         self.client = _ClickhouseClient(
-            host=clickhouse_config.get("clickhouse_host"),
-            port=clickhouse_config.get("clickhouse_port", 8123),
-            username=clickhouse_config.get("clickhouse_username"),
-            password=clickhouse_config.get("clickhouse_password", ""),
-            database=clickhouse_config.get("clickhouse_database", "default")
+            **clickhouse_config.get_connection_config()
         )
 
-        engine = clickhouse_config.get("clickhouse_engine", "MergeTree")
+        engine = clickhouse_config.get_engine()
         _ClickhouseHelpers.create_tables(self.client, engine=engine)
 
     async def dump_events(self, events: List[dict]):
         """Insert a list of event dictionaries into Clickhouse."""
         rows = _ClickhouseHelpers.convert_json_to_clickhouse_format(events)
         await self.client.insert("task_events", rows)
+
+
+class ClickhouseRetriever(AbstractEventRetriever):
+    """Clickhouse implementation of the AbstractEventRetriever."""
+
+    url_endpoint_name = "clickhouse"
+
+    def __init__(self, clickhouse_config: ClickhouseConfig):
+        logger.info("Initializing ClickhouseRetriever")
+
+        self.client = _ClickhouseClient(
+            **clickhouse_config.get_connection_config()
+        )
+
+    async def fetch_events(self, start_time: datetime, end_time: datetime) -> List[dict]:
+        """Retrieve events from Clickhouse within the specified time range."""
+
+        query = """
+        SELECT event_time, task_id, event_type, hostname, payload
+        FROM task_events
+        WHERE event_time >= {start_time: DateTime}
+          AND event_time <= {end_time: DateTime}
+        ORDER BY event_time ASC
+        """
+
+        result = await _ClickhouseClient.query(self.client, query, params={
+            "start_time": start_time,
+            "end_time": end_time
+        })
+
+        events = _ClickhouseHelpers.convert_clickhouse_to_json_format(result)
+        return events
 
 
 class _ClickhouseClient:
@@ -52,6 +102,10 @@ class _ClickhouseClient:
     async def insert(self, table: str, data: List[List[dict]]):
         await asyncio.to_thread(self.client.insert, table, data,
                                 column_names=_ClickhouseHelpers.column_order)
+        
+    async def query(self, query: str, params: dict) -> Sequence[Sequence[Any]]:
+        query_result = await asyncio.to_thread(self.client.query, query, parameters=params)
+        return query_result.result_rows
 
 
 class _ClickhouseHelpers:
@@ -119,3 +173,21 @@ class _ClickhouseHelpers:
             rows[i] = row
 
         return rows
+    
+    @classmethod
+    def convert_clickhouse_to_json_format(cls, rows: Sequence[Sequence[Any]]) -> List[dict]:
+        """Convert Clickhouse rows back to JSON format."""
+        json_data = []
+
+        for row in rows:
+            event_time, task_id, event_type, hostname, payload = row
+            event = {
+                "timestamp": event_time.timestamp(),
+                "uuid": str(task_id),
+                "type": event_type,
+                "hostname": hostname,
+            }
+            event.update(payload)  # Merge payload into the event
+            json_data.append(event)
+
+        return json_data
