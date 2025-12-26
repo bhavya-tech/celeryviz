@@ -25,6 +25,7 @@ def set_log_level(log_level):
 @click.command(cls=CeleryCommand,
                context_settings={
                    'ignore_unknown_options': True})
+
 @click.option('-l', '--log-level',
               default='INFO',
               type=click.Choice(list(LOGGING_LEVELS.keys()),
@@ -41,7 +42,37 @@ def set_log_level(log_level):
               default=DEFAULT_PORT,
               type=int,
               help=f'Port to run the web server on (default: {DEFAULT_PORT})')
+
+@click.option('--clickhouse-enable',
+              is_flag=True,
+              help='Enable ClickHouse event sink.')
+
+@click.option('--clickhouse-host',
+              default=None,
+              help='ClickHouse host address (default: localhost)')
+
+@click.option('--clickhouse-port',
+              default=8123,
+              type=int,
+              help='ClickHouse HTTP port (default: 8123)')
+
+@click.option('--clickhouse-database',
+              default='default',
+              help='ClickHouse database name (default: default)')
+
+@click.option('--clickhouse-username',
+              default=None,
+              help='ClickHouse username (default: None)')
+
+@click.option('--clickhouse-password',
+              default='',
+              help='ClickHouse password (default: empty string)')
+
+@click.option('--clickhouse-engine',
+              
+              help='ClickHouse table engine (default: MergeTree)')
+
 @click.pass_context
-def celeryviz(ctx, log_level, record_file, no_socketio, port):
+def celeryviz(ctx, log_level, record_file, no_socketio, port, **kwargs):
     set_log_level(log_level)
-    starter(ctx, record_file, no_socketio, port)
+    starter(ctx, record_file, no_socketio, port, **kwargs)
