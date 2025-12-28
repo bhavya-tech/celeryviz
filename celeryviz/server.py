@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import asyncio
@@ -22,7 +22,7 @@ class Server:
     def __init__(self,
                  loop: asyncio.AbstractEventLoop,
                  port: int = DEFAULT_PORT,
-                 event_data_sinks: List[AbstractEventSink] | None = None):
+                 event_data_sinks: Optional[List[AbstractEventSink]] = None):
         self.app = FastAPI()
         self.loop = loop
         self.port = port
