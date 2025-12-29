@@ -82,6 +82,9 @@ COPY --from=download-and-extract-prebuilt /app/static/ /celeryviz/static/
 
 FROM python:3.9-alpine AS setup-celeryviz-dependency
 
+RUN apk add --no-cache build-base linux-headers
+
+
 WORKDIR /app
 COPY . .
 
