@@ -26,6 +26,10 @@ class AbstractEventRetriever:
         """Receive a list of event dictionaries from the data source."""
         raise NotImplementedError("Subclasses must implement fetch_events method.")
     
+    async def head_method(self, *args, **kwargs):
+        """Handle HEAD requests for event data."""
+        raise NotImplementedError("Subclasses must implement head_method method.")
+
 
 class AbstractConfigurableService:
     """Abstract service that can be configured via a config dictionary."""

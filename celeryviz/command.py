@@ -68,9 +68,13 @@ def set_log_level(log_level):
               default='',
               help='ClickHouse password (default: empty string)')
 
+@click.option('--clickhouse-file-path',
+              help='File path for ClickHouse chDB file engine.')
+
 @click.option('--clickhouse-engine',
-              
-              help='ClickHouse table engine (default: MergeTree)')
+              type=click.Choice(['MergeTree', 'Memory', 'File']),
+              default='Memory',
+              help='ClickHouse table engine. MergeTree will connect to hosted DB, Memory and File for local testing.')
 
 @click.pass_context
 def celeryviz(ctx, log_level, record_file, no_socketio, port, **kwargs):

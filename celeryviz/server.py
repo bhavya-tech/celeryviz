@@ -44,6 +44,7 @@ class Server:
         for retriever in self.event_data_retrievers:
             endpoint = f"/data/{retriever.url_endpoint_name}/"
             self.app.get(endpoint)(retriever.fetch_events)
+            self.app.head(endpoint)(retriever.head_method)
 
     def frontend_app(self):
         return HTMLResponse(content=open("celeryviz/static/index.html").read(), status_code=200)
