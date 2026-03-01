@@ -10,6 +10,7 @@ from socketio import Client
 
 from celeryviz.constants import *
 from celeryviz.executor import starter
+from celeryviz.config import settings
 from tests.utils import get_free_ephemeral_port
 
 
@@ -40,6 +41,12 @@ class MockCtx:
         self.obj.app = app
 
 
+def run_server(ctx, port, no_socketio):
+    settings.port = port
+    settings.no_socketio = no_socketio
+    starter(ctx)
+
+
 class TestIntegration(unittest.TestCase):
     """
     This test the backend end to end. It starts the server and client and checks if the client receives the event.
@@ -53,8 +60,9 @@ class TestIntegration(unittest.TestCase):
         self.mock_ctx = MockCtx(self.app)
 
         self.on_event = Mock()
+        
         self.server_process = multiprocessing.Process(
-            target=starter, args=[self.mock_ctx, None, False, DEFAULT_PORT], daemon=True)
+            target=run_server, args=(self.mock_ctx, DEFAULT_PORT, False), daemon=True)
         self.client_thread = ClientThread(self.on_event)
         return super().setUp()
 
