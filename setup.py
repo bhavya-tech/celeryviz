@@ -2,8 +2,8 @@ from dotenv import load_dotenv
 import os
 from setuptools import setup, find_packages
 
-def get_requirements():
-    return open('./requirements.txt').read().splitlines()
+def get_requirements(filename):
+    return open(filename).read().splitlines()
 
 load_dotenv("config.env")
 
@@ -36,7 +36,10 @@ setup(
     package_dir={'celeryviz': 'celeryviz'},
     include_package_data=True,
     package_data={'celeryviz': ['static/*']},
-    install_requires=get_requirements(),
+    install_requires=get_requirements('./requirements.txt'),
+    extras_require={
+        'dev': get_requirements('./requirements-dev.txt'),
+    },
     entry_points={
         'celery.commands': [
             'celeryviz = celeryviz.command:celeryviz',
