@@ -6,6 +6,8 @@ services:
 
   celery:
     entrypoint: ["/bin/bash", "-c"]
+    environment:
+      - REDIS_HOST=redis
     command: >
       "
       echo 'Purging tasks...';

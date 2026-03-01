@@ -1,8 +1,12 @@
 from time import sleep
 import celery
 from celeryviz.log import attach_log_sender
+import os
 
-app = celery.Celery('example_app', broker='redis://redis:6379/0')
+REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
+
+app = celery.Celery('example_app', broker='redis://%s:6379/0' % REDIS_HOST,
+                     backend='redis://%s:6379/0' % REDIS_HOST)
 logger = celery.utils.log.get_task_logger(__name__)
 
 attach_log_sender(app, logger)
