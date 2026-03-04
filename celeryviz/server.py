@@ -16,16 +16,19 @@ banner_template = f"""
 ==================================
 """
 
+import logging
+from .config import settings
+
 logger = logging.getLogger(__name__)
 
 class Server:
     def __init__(self,
                  loop: asyncio.AbstractEventLoop,
-                 port: int = DEFAULT_PORT,
+                 port: int = None,
                  event_data_sinks: Optional[List[AbstractEventSink]] = None):
         self.app = FastAPI()
         self.loop = loop
-        self.port = port
+        self.port = port or settings.port
         self.event_data_sinks = event_data_sinks or []
 
         self._mount_socketio_app()
