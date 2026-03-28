@@ -11,6 +11,10 @@ https://github.com/user-attachments/assets/2c9fdd3b-7a77-4464-b13d-a287ca125e7d
 
 This project simplifies debugging of asynchronous Celery tasks by offering a visual representation of the task execution flow. Instead of combing through the log files, developers can use Celeryviz to visually trace and debug task processes more efficiently.
 
+## Documentation
+
+Comprehensive documentation is available at [Read the Docs](https://celeryviz.readthedocs.io/).
+
 ## Installation
 
 1. Python library
