@@ -1,0 +1,99 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="28.2.9">
+  <diagram name="Page-1" id="FTx1eKvs1Mxz4jyOgfVX">
+    <mxGraphModel dx="2678" dy="2442" grid="1" gridSize="1" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pk4dknYkLeEOty4d4b3h-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-31" target="pk4dknYkLeEOty4d4b3h-32">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="75" y="116" />
+              <mxPoint x="75" y="302" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-31" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px; font-weight: 400;&quot;&gt;download-and-extract-prebuilt&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;Downloads the prebuilt frontend assets to avoid heavy compilation.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=1;align=center;strokeColor=default;" vertex="1" parent="1">
+          <mxGeometry x="-383" y="61" width="241" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-32" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px; font-weight: 400;&quot;&gt;webapp-prebuilt&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;Copies the downloaded assets into celeryviz/static directory.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=1;align=center;strokeColor=default;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="391" y="230" width="241" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-68" target="pk4dknYkLeEOty4d4b3h-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-69" target="pk4dknYkLeEOty4d4b3h-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-35" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px; font-weight: 400;&quot;&gt;setup-celeryviz-dependency&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;Sets up the environment needed for celeryviz and installs it.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=1;align=center;strokeColor=default;" vertex="1" parent="1">
+          <mxGeometry x="-383" y="-42" width="241" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-36" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px; font-weight: 400;&quot;&gt;celeryviz-with-frontend-build&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;Builds the complete docker image of celeryviz. Also builds the frontend from scratch. (If custom repo and branch/tag are passed for frontend, it will build custom frontend as well.)&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=1;align=center;strokeColor=default;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="391" y="78" width="241" height="133" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-40" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px; font-weight: 400;&quot;&gt;celeryviz&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;Builds complete docker image of celeryviz.&lt;/p&gt;&lt;p&gt;(Uses the official prebuilt frontend assets.)&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=1;align=center;strokeColor=default;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="391" y="-53" width="241" height="113" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-49" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-43" target="pk4dknYkLeEOty4d4b3h-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-43" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px; font-weight: 400;&quot;&gt;flutter_build_base&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;Provides flutter environment&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=1;align=center;strokeColor=default;" vertex="1" parent="1">
+          <mxGeometry x="-713" y="166" width="241" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-45" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px; font-weight: 400;&quot;&gt;webapp-build&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;Builds the webapp and copies the build in the celeryviz/static directory. Used in dev env.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=1;align=center;strokeColor=default;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="391" y="345" width="241" height="109" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.004;entryY=0.595;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-47" target="pk4dknYkLeEOty4d4b3h-45">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-355.0000000000002" y="657" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-47" target="pk4dknYkLeEOty4d4b3h-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-47" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px; font-weight: 400;&quot;&gt;webapp-compile&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;Compiles the webapp for the given repo and branch/tag&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=1;align=center;strokeColor=default;" vertex="1" parent="1">
+          <mxGeometry x="-383" y="164" width="241" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-70" value="Uses" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="229" y="300" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-75" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endSize=7;endArrow=none;endFill=0;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-35" target="pk4dknYkLeEOty4d4b3h-68">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-142" y="4" as="sourcePoint" />
+            <mxPoint x="391" y="3" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-68" value="Inherits" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="229" y="-12" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-80" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-31" target="pk4dknYkLeEOty4d4b3h-40">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-142" y="116" as="sourcePoint" />
+            <mxPoint x="391" y="32" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="75" y="116" />
+              <mxPoint x="75" y="32" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-71" value="Uses" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="229" y="31" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-83" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pk4dknYkLeEOty4d4b3h-35" target="pk4dknYkLeEOty4d4b3h-69">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-142" y="4" as="sourcePoint" />
+            <mxPoint x="391" y="146" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-69" value="Inherits" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="229" y="129" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-84" value="Uses" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="228" y="178" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pk4dknYkLeEOty4d4b3h-85" value="Uses" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="229" y="411" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

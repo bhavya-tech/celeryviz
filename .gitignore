@@ -6,5 +6,6 @@
 celeryviz.egg-info/
 celeryviz/static/
 dist/*
-*/.DS_Store
+.DS_Store
 *.pyc
+docs/build/*
