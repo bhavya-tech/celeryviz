@@ -65,7 +65,14 @@ Open an issue on GitHub with the following information:
     pytest
     ```
 
-6. 📬 **Send your changes to us**
+6. 📝 **Update the docs**
+  - Update the docs according to the changes you have made.
+  - Run the following command to build the docs locally to preview:
+    ```bash
+    make html
+    ```
+
+7. 📬 **Send your changes to us**
     ```bash
     git commit -m "Description of your changes"
     git push origin feature-branch

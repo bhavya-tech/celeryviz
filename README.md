@@ -1,92 +1,72 @@
-CeleryViz
-=========
+# CeleryViz
 
-A UI centric tool for visualising Celery task execution.
+> A UI-centric tool for visualising Celery task execution.
 
-[**Live Demo**](https://bhavya-tech.github.io/celeryviz_demo/)
+[![PyPI](https://img.shields.io/pypi/v/celeryviz?logo=pypi&logoColor=white)](https://pypi.org/project/celeryviz/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue?logo=apache&logoColor=white)](LICENSE)
+[![Docs](https://img.shields.io/readthedocs/celeryviz?logo=readthedocs&logoColor=white)](https://celeryviz.readthedocs.io/)
+[![Docker Image](https://img.shields.io/badge/docker-bhavyatech%2Fceleryviz-blue?logo=docker)](https://hub.docker.com/r/bhavyatech/celeryviz)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/bhavya-tech/celeryviz)
 
-https://github.com/user-attachments/assets/2c9fdd3b-7a77-4464-b13d-a287ca125e7d
 
 
+Debugging async Celery tasks usually means combing through log files. CeleryViz gives you a real-time visual trace of your task execution flow instead, so you can spot bottlenecks, failures, and task chains at a glance.
 
-This project simplifies debugging of asynchronous Celery tasks by offering a visual representation of the task execution flow. Instead of combing through the log files, developers can use Celeryviz to visually trace and debug task processes more efficiently.
 
-## Documentation
+👉 **[Try the Live Demo](https://bhavya-tech.github.io/celeryviz_demo/)**
 
-Comprehensive documentation is available at [Read the Docs](https://celeryviz.readthedocs.io/).
+▶ **[Watch on YouTube](https://www.youtube.com/watch?v=ZXM--jIFfR8)**
 
-## Installation
+📖 **[Read the Docs](https://celeryviz.readthedocs.io/)**
 
-1. Python library
+## Quick Start
+
+Using Python library
 
 ```bash
 pip install celeryviz
+celery -A your_app celeryviz
 ```
 
-2. Docker image
-```bash
-docker pull bhavyatech/celeryviz:0.0.3
-```
-
-## Run the example
-  - To test the example, you can use the provided Docker Compose setup. This will set up a Redis server, a Celery worker, and the CeleryViz server.
-```bash
-cd example
-docker-compose up --build
-```
-(This may take a few minutes to build the first time.)
-
-## Usage
-
-#### 1. Create a celery project.
-  - Use [this gist](https://gist.github.com/bhavya-tech/d937ef45905720014ee12fe332352966) for a minimal example.
+Or using Docker image (with your existing Celery app)
 
 ```bash
-curl https://gist.githubusercontent.com/bhavya-tech/d937ef45905720014ee12fe332352966/raw/0afac784adfb6b407fa83ce4b19e6f3cab4d80d9/example_app.py -o example_app.py
+docker pull bhavyatech/celeryviz:latest
+docker run -p 9095:9095 -v $PWD:/app bhavyatech/celeryviz:latest celery -A your_app celeryviz
 ```
 
-#### 2. Start the celery worker:
-
-  - Ensure a message broker is running (can use [RabbitMQ](https://www.rabbitmq.com/docs/download) for simplicity)
-
-  - Schedule a task for celery to run:
+Or using Docker image (with broker URL)
 
 ```bash
-celery -A example_app call example_app.add --args='[1, 100]' --kwargs='{"z":10000}'
-```
-
-  - Run the celery worker.
-```bash
-celery -A example_app worker -l info -E
-```
-
-#### 3. Start the CeleryViz server:
-
-##### 3.1 Using docker image
-There are two ways to run celeryviz:
-
-  1. Pass the broker url 
-```bash
-docker run -p 9095:9095 bhavyatech/celeryviz:0.0.3 celery --broker='<broker_url>' celeryviz
-```
-
-  2. Use the configuration of [celery application](https://docs.celeryq.dev/en/stable/userguide/application.html).
-```bash
-docker run -p 9095:9095 -v $PWD:/app bhavyatech/celeryviz:0.0.3 celery -A example_app.app celeryviz
+docker pull bhavyatech/celeryviz:latest
+docker run -p 9095:9095 bhavyatech/celeryviz:latest celery --broker='<broker_url>' celeryviz
 ```
 
 
-##### 3.2 Using the installed celeryviz python library
-  - In a new terminal, run the following command:
 
-```bash
-celery -A example_app celeryviz
-```
+Then open [http://localhost:9095/app/](http://localhost:9095/app/) in your browser.
 
-#### 4. Connect to the server:
-  -  Open your browser and go to [http://localhost:9095/app/]()
+📖 **[Full installation & setup guide →](https://celeryviz.readthedocs.io/en/latest/installation.html)**
 
----
+
+## What it does
+
+- **Visualises task flow:** See tasks, their states, and execution order in a clean UI
+- **Real-time updates:** Watch tasks progress live as your workers process them
+- **Zero code changes:** Plug in via CLI, works with your existing Celery app
+- **Flexible deployment:** Run as a Python package or a Docker container
+
+
+## Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a PR.  
+For issues or feature requests, open a [GitHub Issue](https://github.com/bhavya-tech/celeryviz/issues).
+
+
+## License
+
+[Apache 2.0](LICENSE)
+
 
 # Reporting violations
 
