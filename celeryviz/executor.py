@@ -1,7 +1,7 @@
 import asyncio
 from .event_receiver import EventListener
 from .server import Server
-from .data_service import get_event_sinks
+from .data_service import get_event_sinks, get_event_retrievers
 from .config import settings
 
 def starter(ctx):
@@ -9,9 +9,11 @@ def starter(ctx):
     app.control.enable_events()
 
     event_data_sinks = get_event_sinks()
+    event_data_retrievers = get_event_retrievers()
 
     server_loop = asyncio.new_event_loop()
-    server = Server(server_loop, port=settings.port, event_data_sinks=event_data_sinks)
+    server = Server(server_loop, port=settings.port, event_data_sinks=event_data_sinks,
+                    event_data_retrievers=event_data_retrievers)
 
     event_listener = EventListener(app, server.event_handler, server_loop)
     event_listener.start()

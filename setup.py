@@ -39,13 +39,11 @@ setup(
     install_requires=get_requirements('./requirements.txt'),
     extras_require={
         'dev': get_requirements('./requirements-dev.txt'),
+        'chdb': ['chdb==3.7.2'],
     },
     entry_points={
         'celery.commands': [
             'celeryviz = celeryviz.command:celeryviz',
         ],
-    },
-    extras_require={
-        'chdb': ['chdb==3.7.2'],
     },
 )

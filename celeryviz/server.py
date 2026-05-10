@@ -6,7 +6,6 @@ from uvicorn import Config, Server as UvicornServer
 import logging
 from fastapi import FastAPI
 from celeryviz.data_service import AbstractEventSink, SocketioEventSink, AbstractEventRetriever
-from celeryviz.constants import DEFAULT_PORT
 
 banner_template = f"""
 ==================================
@@ -24,8 +23,9 @@ logger = logging.getLogger(__name__)
 class Server:
     def __init__(self,
                  loop: asyncio.AbstractEventLoop,
-                 port: int = None,
-                 event_data_sinks: Optional[List[AbstractEventSink]] = None):
+                 port: Optional[int] = None,
+                 event_data_sinks: Optional[List[AbstractEventSink]] = None,
+                 event_data_retrievers: Optional[List[AbstractEventRetriever]] = None):
         self.app = FastAPI()
         self.loop = loop
         self.port = port or settings.port
