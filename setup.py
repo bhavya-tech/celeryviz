@@ -45,4 +45,7 @@ setup(
             'celeryviz = celeryviz.command:celeryviz',
         ],
     },
+    extras_require={
+        'chdb': ['chdb==3.7.2'],
+    },
 )

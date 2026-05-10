@@ -5,7 +5,7 @@ import asyncio
 from uvicorn import Config, Server as UvicornServer
 import logging
 from fastapi import FastAPI
-from celeryviz.data_service import AbstractEventSink, SocketioEventSink
+from celeryviz.data_service import AbstractEventSink, SocketioEventSink, AbstractEventRetriever
 from celeryviz.constants import DEFAULT_PORT
 
 banner_template = f"""
@@ -30,8 +30,9 @@ class Server:
         self.loop = loop
         self.port = port or settings.port
         self.event_data_sinks = event_data_sinks or []
-
+        self.event_data_retrievers = event_data_retrievers or []
         self._mount_socketio_app()
+        self._mount_event_retriever_endpoints()
         self.app.get("/app/", response_class=HTMLResponse)(self.frontend_app)
         self.app.mount("/", StaticFiles(directory="celeryviz/static"), name="static")
 
@@ -40,6 +41,12 @@ class Server:
                                 if isinstance(sink, SocketioEventSink)), None)
         if socketio_sink:
             self.app.mount("/socket.io", socketio_sink.socket_app)
+
+    def _mount_event_retriever_endpoints(self):
+        for retriever in self.event_data_retrievers:
+            endpoint = f"/data/{retriever.url_endpoint_name}/"
+            self.app.get(endpoint)(retriever.fetch_events)
+            self.app.head(endpoint)(retriever.head_method)
 
     def frontend_app(self):
         return HTMLResponse(content=open("celeryviz/static/index.html").read(), status_code=200)
